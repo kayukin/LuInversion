@@ -43,4 +43,5 @@ public:
     double operator()(size_t i, size_t j) const;
 
     friend class LuDecomposition;
+	friend class Generator;
 };

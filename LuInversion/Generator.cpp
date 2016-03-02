@@ -281,23 +281,7 @@ void Generator::mygen(double **a, double **a_inv, int n, double alpha, double be
 }
 
 Generator::Generator(int n, double alpha, double beta) : a(n), aInv(n) {
-    double **A = new double *[n];
-    double **A_inv = new double *[n];
-    for (int i = 0; i < n; ++i) {
-        A[i] = new double[n];
-        A_inv[i] = new double[n];
-    }
-    mygen(A, A_inv, n, alpha, beta, SIGN_LAW, LAMBDA_LAW, VARIANT, SCHEMA);
-    for (int i = 0; i < a.getSize(); ++i) {
-        for (int j = 0; j < a.getSize(); ++j) {
-            a(i, j) = A[i][j];
-            aInv(i, j) = A_inv[i][j];
-        }
-        delete[] A[i];
-        delete[]A_inv[i];
-    }
-    delete[] A;
-    delete[] A_inv;
+    mygen(a.matr, aInv.matr, n, alpha, beta, SIGN_LAW, LAMBDA_LAW, VARIANT, SCHEMA);
 }
 
 const Matrix &Generator::getMatrix() const {

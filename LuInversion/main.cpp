@@ -11,10 +11,12 @@ int main() {
     size_t n = 3;
 
     Generator generator(n, alpha, beta);
-    ifstream input("input.txt");
-    Matrix myMatrix(input);
+    ofstream ofs("output.txt");
+	ofs << "Generated matrix" << endl;
+	ofs << generator.getMatrix << endl;
     Matrix invertedMatrix = LuDecomposition::Inverse(generator.getMatrix());
-
-    cout << invertedMatrix << endl;
-    cout << generator.getInvertedMatrix() << endl;
+	ofs << "Inverted matrix" << endl;
+	ofs << invertedMatrix << endl;
+	ofs << "Generated inv matrix" << endl;
+	ofs << generator.getInvertedMatrix << endl;
 }
