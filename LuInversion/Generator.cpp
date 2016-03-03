@@ -278,6 +278,17 @@ void Generator::mygen(double **a, double **a_inv, int n, double alpha, double be
     matr_mul(a, a_inv, r, n);
     for (i = 0; i < n; i++) r[i][i] -= 1.;
     Rnorm = matr_inf_norm(r, n);
+	for (size_t i = 0; i < n; i++) {
+		delete[]r[i];
+		delete[] Q[i];
+	}
+	delete[] Q;
+	delete[] r;
+	delete[] kappa;
+	delete[] J;
+	delete[] J_inv;
+	delete[] lambda;
+	delete[] sign;
 }
 
 Generator::Generator(int n, double alpha, double beta) : a(n), aInv(n) {
