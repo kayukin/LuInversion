@@ -30,6 +30,8 @@ public:
 
     Matrix operator*(const Matrix &B) const;
 
+	Matrix operator-(const Matrix &B)const;
+
     double Norm() const;
 
     double Determinant() const;

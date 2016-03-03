@@ -59,4 +59,7 @@
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="output.csv" />
+  </ItemGroup>
 </Project>

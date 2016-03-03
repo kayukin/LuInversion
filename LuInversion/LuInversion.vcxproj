@@ -166,6 +166,9 @@
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="Vector.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="output.csv" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

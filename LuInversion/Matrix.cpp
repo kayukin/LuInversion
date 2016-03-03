@@ -54,16 +54,27 @@ Matrix Matrix::operator*(const Matrix &B) const {
     return result;
 }
 
+Matrix Matrix::operator-(const Matrix & B) const
+{
+	Matrix res(*this);
+	for (size_t i = 0; i < size; i++) {
+		for (size_t j = 0; j < size; j++) {
+			res.matr[i][j] -= B.matr[i][j];
+		}
+	}
+	return res;
+}
+
 double Matrix::Norm() const {
-    double sum = 0, norm = 0;
-    for (size_t i = 0; i < size; i++) {
-        sum = 0;
-        for (size_t j = 0; j < size; j++) {
-            sum += fabs(matr[i][j]);
-        }
-        norm = (sum > norm) ? sum : norm;
-    }
-    return norm;
+	double s, norm = 0.;
+	for (size_t i = 0; i < size; i++) {
+		s = 0.;
+		for (size_t j = 0; j < size; j++)
+			s += fabs(matr[i][j]);
+		if (s > norm)
+			norm = s;
+	}
+	return norm;
 }
 
 double Matrix::Determinant() const {
@@ -89,7 +100,7 @@ double Matrix::Determinant() const {
 std::ostream &operator<<(std::ostream &os, const Matrix &matrix) {
     for (size_t i = 0; i < matrix.size; i++) {
         for (size_t j = 0; j < matrix.size; j++)
-            os << matrix.matr[i][j] << ' ';
+            os << matrix.matr[i][j] << '\t';
         os << std::endl;
     }
     return os;
