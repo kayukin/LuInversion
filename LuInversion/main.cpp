@@ -3,7 +3,7 @@
 #include "Generator.h"
 #include "LuDecomposition.h"
 
-#define N 300
+#define N 3
 
 
 using namespace std;
@@ -15,6 +15,16 @@ int main() {
 
     ofstream ofs("output.csv");
 	ofstream txt("output.txt");
+
+	Generator generator(n, alpha, beta);
+	txt << generator.getInvertedMatrix() << endl;
+	Matrix invertedMatrix = LuDecomposition::Inverse(generator.getMatrix());
+	txt << invertedMatrix << endl;
+
+
+
+
+	return 0;
 
 	ofs << "alpha, beta, Norm from generator, Norm, obusl" << endl;
 	for (beta = 10; beta < 1e4; beta *= 10) {

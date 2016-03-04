@@ -32,9 +32,9 @@ private:
 public:
     Generator(int n, double alpha, double beta);
 
-    const Matrix &getMatrix() const;
+    Matrix getMatrix();
 
-    const Matrix &getInvertedMatrix() const;
+    Matrix getInvertedMatrix();
 
     double getNorm_inv() const;
 

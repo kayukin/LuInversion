@@ -7,44 +7,32 @@
 
 struct DecompositionExeption {};
 
-void drawMatrix(const Matrix& matrix) {
+void drawMatrix(double** matrix, size_t size) {
 	system("cls");
-	cout << matrix;
+	for (size_t i = 0; i < size; i++)
+	{
+		for (size_t j = 0; j < size; j++)
+		{
+			cout << matrix[i][j] << "   ";
+		}
+		cout << endl;
+	}
 }
 
-Matrix LuDecomposition::Inverse(const Matrix &matrix) {
+Matrix LuDecomposition::Inverse(Matrix &matrix) {
 	size_t size = matrix.getSize();
 	Matrix invertedMatrix(size);
-	Matrix LU(size);
 
-	double **luPointer = LU.matr;
 	double **invertedMatrixPointer = invertedMatrix.matr;
 	double **matrixPointer = matrix.matr;
 
 
 	//использовать одну матрицу
 
+	luDecompose(matrixPointer, size);
 
-
-	for (size_t i = 0; i < size; i++) {
-		for (size_t j = 0; j < size; j++) {
-			double sum = 0;
-			if (i <= j) {
-				for (size_t k = 0; k < i; k++)
-					sum += luPointer[i][k] * luPointer[k][j];
-				luPointer[i][j] = matrixPointer[i][j] - sum;
-			}
-			else {
-				size_t index = findMaxColumnIndex(luPointer[j], size);
-				swapColumns(luPointer, size, j, index, i);
-				for (size_t k = 0; k < j; k++)
-					sum += luPointer[i][k] * luPointer[k][j];
-				if (luPointer[j][j] == 0)
-					throw DecompositionExeption();
-				luPointer[i][j] = (matrixPointer[i][j] - sum) / luPointer[j][j];
-			}
-		}
-	}
+	//LU = matrix;
+	//luDecomposeSingleMatrix(luPointer, size);
 
 
 	for (int i = size - 1; i >= 0; i--) {
@@ -52,17 +40,17 @@ Matrix LuDecomposition::Inverse(const Matrix &matrix) {
 			double sum = 0;
 			if (i == j) {
 				for (int p = j + 1; p < size; p++)
-					sum += luPointer[j][p] * invertedMatrixPointer[p][j];
-				invertedMatrixPointer[j][j] = (1 - sum) / luPointer[j][j];
+					sum += matrixPointer[j][p] * invertedMatrixPointer[p][j];
+				invertedMatrixPointer[j][j] = (1 - sum) / matrixPointer[j][j];
 			}
 			else if (i < j) {
 				for (size_t p = i + 1; p < size; p++)
-					sum += luPointer[i][p] * invertedMatrixPointer[p][j];
-				invertedMatrixPointer[i][j] = -sum / luPointer[i][i];
+					sum += matrixPointer[i][p] * invertedMatrixPointer[p][j];
+				invertedMatrixPointer[i][j] = -sum / matrixPointer[i][i];
 			}
 			else {
 				for (int p = j + 1; p < size; p++)
-					sum += invertedMatrixPointer[i][p] * luPointer[p][j];
+					sum += invertedMatrixPointer[i][p] * matrixPointer[p][j];
 				invertedMatrixPointer[i][j] = -sum;
 			}
 
@@ -91,5 +79,51 @@ void LuDecomposition::swapColumns(double** matrix, size_t size, size_t first, si
 		double temp = matrix[i][first];
 		matrix[i][first] = matrix[i][second];
 		matrix[i][second] = temp;
+	}
+}
+
+void LuDecomposition::luDecomposeWithPivoting(double ** luPointer, size_t size) {
+	drawMatrix(luPointer, size);
+	for (size_t i = 0; i < size; i++) {
+		for (size_t j = 0; j < size; j++) {
+			double sum = 0;
+			if (i <= j) {
+				for (size_t k = 0; k < i; k++)
+					sum += luPointer[i][k] * luPointer[k][j];
+				luPointer[i][j] = luPointer[i][j] - sum;
+				drawMatrix(luPointer, size);
+			}
+			else {
+				for (size_t k = 0; k < j; k++)
+					sum += luPointer[i][k] * luPointer[k][j];
+				if (luPointer[j][j] == 0)
+					throw DecompositionExeption();
+				luPointer[i][j] = (luPointer[i][j] - sum) / luPointer[j][j];
+				drawMatrix(luPointer, size);
+			}
+		}
+	}
+}
+
+void LuDecomposition::luDecompose(double **luPointer, size_t size) {
+	drawMatrix(luPointer, size);
+	for (size_t i = 0; i < size; i++) {
+		for (size_t j = 0; j < size; j++) {
+			double sum = 0;
+			if (i <= j) {
+				for (size_t k = 0; k < i; k++)
+					sum += luPointer[i][k] * luPointer[k][j];
+				luPointer[i][j] = luPointer[i][j] - sum;
+				drawMatrix(luPointer, size);
+			}
+			else {
+				for (size_t k = 0; k < j; k++)
+					sum += luPointer[i][k] * luPointer[k][j];
+				if (luPointer[j][j] == 0)
+					throw DecompositionExeption();
+				luPointer[i][j] = (luPointer[i][j] - sum) / luPointer[j][j];
+				drawMatrix(luPointer, size);
+			}
+		}
 	}
 }

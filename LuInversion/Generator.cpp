@@ -295,11 +295,11 @@ Generator::Generator(int n, double alpha, double beta) : a(n), aInv(n) {
     mygen(a.matr, aInv.matr, n, alpha, beta, SIGN_LAW, LAMBDA_LAW, VARIANT, SCHEMA);
 }
 
-const Matrix &Generator::getMatrix() const {
+Matrix Generator::getMatrix() {
     return a;
 }
 
-const Matrix &Generator::getInvertedMatrix() const {
+Matrix Generator::getInvertedMatrix() {
     return aInv;
 }
 
