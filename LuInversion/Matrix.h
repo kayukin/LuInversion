@@ -1,49 +1,52 @@
 #pragma once
 
-#include <stddef.h>
 #include <iosfwd>
-#include <string.h>
 #include <ostream>
-#include <cmath>
-#include <istream>
-using namespace std;
 
-class Matrix {
+
+class Matrix
+{
 protected:
-    double **matr;
-    size_t size;
+	double** matr;
+	size_t size;
 
-    void Destroy();
+	void Destroy();
 
-    void Copy(const Matrix &);
+	void Copy(const Matrix&);
 
 public:
-    Matrix(size_t N);
+	explicit Matrix(size_t N);
+	explicit Matrix(std::istream& ifs);
 
-    Matrix(const Matrix &);
+	Matrix(const Matrix& other);
+	Matrix& operator=(const Matrix& other);
 
-    Matrix(istream& ifs);
+	~Matrix();
 
-    ~Matrix();
 
-    Matrix &operator=(const Matrix &);
+	Matrix operator*(const Matrix& B) const;
 
-    Matrix operator*(const Matrix &B) const;
+	Matrix operator-(const Matrix& B) const;
 
-	Matrix operator-(const Matrix &B)const;
+	double Norm() const;
 
-    double Norm() const;
+	double Determinant() const;
 
-    double Determinant() const;
+	friend std::ostream& operator<<(std::ostream& os, const Matrix& matrix);
 
-    friend ostream &operator<<(ostream &os, const Matrix &matrix);
+	inline double& operator()(size_t i, size_t j)
+	{
+		return matr[i][j];
+	}
 
-    double &operator()(size_t i, size_t j);
+	inline double operator()(size_t i, size_t j) const
+	{
+		return matr[i][j];
+	}
 
-    size_t getSize() const;
+	size_t getSize() const;
 
-    double operator()(size_t i, size_t j) const;
 
-    friend class LuDecomposition;
+	friend class LuDecomposition;
 	friend class Generator;
 };
